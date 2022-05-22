@@ -3,6 +3,9 @@ enum Team {
   bandyci,
   indianie,
   ufoki,
+  luckyLuke,
+  murzyni,
+  bogowie,
 }
 
 export default Team;

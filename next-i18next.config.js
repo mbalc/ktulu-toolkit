@@ -1,4 +1,4 @@
-const path = require('path');
+/* eslint-disable @typescript-eslint/no-var-requires */
 
 module.exports = {
   i18n: {
@@ -6,6 +6,7 @@ module.exports = {
     locales: ['en', 'pl'],
     otherLanguages: ['en', 'pl'],
     defaultLanguage: 'pl',
+    localeExtension: 'yml',
     fallbackLng: ['pl'],
   },
 };
