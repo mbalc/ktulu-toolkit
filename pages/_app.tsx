@@ -1,5 +1,9 @@
 import { appWithTranslation, i18n } from 'next-i18next';
 import type { AppProps } from 'next/app';
+import Peer, { DataConnection } from 'peerjs';
+import { useState } from 'react';
+import Card from '~/game/Card';
+import { GameClientContext, GameHostContext } from '~/game/Context';
 import '../styles/globals.css';
 
 if (process.env.NODE_ENV === 'development') {
@@ -12,8 +16,28 @@ if (process.env.NODE_ENV === 'development') {
   }
 }
 
-function MyApp({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />;
+const TranslatedApp = appWithTranslation(({ Component, pageProps, router }) => (
+  <Component {...pageProps} router={router} />
+));
+
+function MyApp({ Component, pageProps, router }: AppProps) {
+  const [peer, setPeer] = useState(null as Peer | null);
+  const [conn, setConn] = useState(null as DataConnection | null); // TODO
+  const [players, setPlayers] = useState({} as Record<string, Card | null>);
+
+  return (
+    <GameHostContext.Provider value={{ peer, setPeer, players, setPlayers }}>
+      <GameClientContext.Provider
+        value={{ conn, setConn, players, setPlayers }}
+      >
+        <TranslatedApp
+          Component={Component}
+          pageProps={pageProps}
+          router={router}
+        />
+      </GameClientContext.Provider>
+    </GameHostContext.Provider>
+  );
 }
 
-export default appWithTranslation(MyApp);
+export default MyApp;
